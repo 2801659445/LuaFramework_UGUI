@@ -95,9 +95,9 @@ namespace LuaInterface
 #if MISS_WARNING
         HashSet<Type> missSet = new HashSet<Type>();
 #endif
-		private LuaFileUtils luaFileLoader;
+        private LuaFileUtils luaFileLoader;
 
-		public LuaState():this(LuaFileUtils.Instance)
+        public LuaState():this(LuaFileUtils.Instance)
 		{
 			
 		}
@@ -120,7 +120,7 @@ namespace LuaInterface
             LuaSetTop(0);
             InitLuaPath();
         }
-
+        
         void OpenBaseLibs()
         {            
             BeginModule(null);
@@ -179,29 +179,29 @@ namespace LuaInterface
         {
             InitPackagePath();
 
-//            if (!luaFileLoader.beZip)
-//            {
-//#if UNITY_EDITOR
-//                if (!Directory.Exists(LuaConst.luaDir))
-//                {
-//                    string msg = string.Format("luaDir path not exists: {0}, configer it in LuaConst.cs", LuaConst.luaDir);
-//                    throw new LuaException(msg);
-//                }
-//
-//                if (!Directory.Exists(LuaConst.toluaDir))
-//                {
-//                    string msg = string.Format("toluaDir path not exists: {0}, configer it in LuaConst.cs", LuaConst.toluaDir);
-//                    throw new LuaException(msg);
-//                }
-//
-//                AddSearchPath(LuaConst.toluaDir);
-//                AddSearchPath(LuaConst.luaDir);
-//#endif
-//                if (luaFileLoader.GetType() == typeof(LuaFileUtils))
-//                {
-//                    AddSearchPath(LuaConst.luaResDir);
-//                }
-//            }
+//             if (!LuaFileUtils.Instance.beZip)
+//             {
+// #if UNITY_EDITOR
+//                 if (!Directory.Exists(LuaConst.luaDir))
+//                 {
+//                     string msg = string.Format("luaDir path not exists: {0}, configer it in LuaConst.cs", LuaConst.luaDir);
+//                     throw new LuaException(msg);
+//                 }
+
+//                 if (!Directory.Exists(LuaConst.toluaDir))
+//                 {
+//                     string msg = string.Format("toluaDir path not exists: {0}, configer it in LuaConst.cs", LuaConst.toluaDir);
+//                     throw new LuaException(msg);
+//                 }
+
+//                 AddSearchPath(LuaConst.toluaDir);
+//                 AddSearchPath(LuaConst.luaDir);
+// #endif
+//                 if (LuaFileUtils.Instance.GetType() == typeof(LuaFileUtils))
+//                 {
+//                     AddSearchPath(LuaConst.luaResDir);
+//                 }
+//             }
         }
 
         void OpenBaseLuaLibs()
@@ -1192,12 +1192,17 @@ namespace LuaInterface
 
         public void Push(LuaByteBuffer bb)
         {
-            LuaDLL.lua_pushlstring(L, bb.buffer, bb.buffer.Length);
+            LuaDLL.lua_pushlstring(L, bb.buffer, bb.Length);
         }
 
         public void PushByteBuffer(byte[] buffer)
         {
             LuaDLL.lua_pushlstring(L, buffer, buffer.Length);
+        }
+
+        public void PushByteBuffer(byte[] buffer, int len)
+        {
+            LuaDLL.lua_pushlstring(L, buffer, len);
         }
 
         public void Push(LuaBaseRef lbr)
